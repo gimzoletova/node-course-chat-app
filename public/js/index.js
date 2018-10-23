@@ -16,8 +16,8 @@ function scrollToButtom () { //decides if should scroll down to last message or 
     let lastMessageHeight = newMessage.prev().innerHeight();
 
     if(clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
-        document.getElementById("messages").scrollTop = scrollHeight;
-        // messages.scrollTop(scrollHeight);
+        messages.scrollTop(scrollHeight); //jQuery equivalent to the js down below:
+        // document.getElementById("messages").scrollTop = scrollHeight;
     }
 }
 
