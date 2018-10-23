@@ -1,5 +1,26 @@
 var socket = io();
 
+function scrollToButtom () { //decides if should scroll down to last message or not. will not scroll if we don't see the last 2
+    let messages = $('#messages');
+    let newMessage = messages.children('li:last-child');
+
+    let clientHeight = messages.prop('clientHeight');//clientHeight is a prop inside the element that gives the height of the rendered part of the element
+    let scrollTop = messages.prop('scrollTop');//scrollTop is a prop inside the element that gives the height of what is above the rendered part of the element
+    let scrollHeight = messages.prop('scrollHeight');//scrollHeight is a prop inside the element that gives the height the whole element
+    //the 3 lines above are jQuery equivalent to the js down below:
+    // let clientHeight = document.getElementById("messages").clientHeight;
+    // let scrollTop = document.getElementById("messages").scrollTop;
+    // let scrollHeight = document.getElementById("messages").scrollHeight;
+
+    let newMessageHeight = newMessage.innerHeight();
+    let lastMessageHeight = newMessage.prev().innerHeight();
+
+    if(clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+        document.getElementById("messages").scrollTop = scrollHeight;
+        // messages.scrollTop(scrollHeight);
+    }
+}
+
 socket.on('connect', function () {
     console.log('Connected to server');  
 });
@@ -17,6 +38,7 @@ socket.on('newMessage', function (message) {
         createdAt: formattedTime
     });
     $('#messages').append(html);
+    scrollToButtom();
     // let formatedTime = moment(message.createdAt).format('H:mm');
     // let li = $('<li></li>');
     // li.text(`${message.from} ${formatedTime}: ${message.text}`);
@@ -32,6 +54,7 @@ socket.on('newLocationMessage', function(message) {
         createdAt: formattedTime
     });
     $('#messages').append(html);
+    scrollToButtom();
     // let formatedTime = moment(message.createdAt).format('H:mm');
     // let li = $('<li></li>');
     // let a = $('<a target="_black">My current location</a>');
