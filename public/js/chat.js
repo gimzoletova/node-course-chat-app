@@ -29,8 +29,7 @@ socket.on('connect', function () {
             window.location.href = '/';
         }
         else {
-            console.log('no error');
-            
+            // console.log('no error');            
         }
     });
 });
@@ -86,7 +85,6 @@ const messageTextBox = $('[name=message');
 $('#message_form').on('submit', function(e) {
     e.preventDefault();
     socket.emit('createMessage', {
-        from: 'user',
         text: messageTextBox.val()
     }, function () {
         messageTextBox.val('');
