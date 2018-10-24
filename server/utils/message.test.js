@@ -10,7 +10,7 @@ describe('generateMessage', () => {
         // expect(result.text).toBe('test=text'); //instead of these 2 lines we can use:
         expect(result).toInclude({from, text});
         expect(result.createdAt).toBeA('number');
-    })
+    });
 });
 
 describe('generateLocationMessage', () => {

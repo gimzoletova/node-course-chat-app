@@ -14,7 +14,6 @@ function scrollToButtom () { //decides if should scroll down to last message or 
 
     let newMessageHeight = newMessage.innerHeight();
     let lastMessageHeight = newMessage.prev().innerHeight();
-
     if(clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
         messages.scrollTop(scrollHeight); //jQuery equivalent to the js down below:
         // document.getElementById("messages").scrollTop = scrollHeight;
@@ -22,11 +21,30 @@ function scrollToButtom () { //decides if should scroll down to last message or 
 }
 
 socket.on('connect', function () {
-    console.log('Connected to server');  
+    console.log('Connected to server');
+    let params = $.deparam(window.location.search);
+    socket.emit    ('join', params, function (err) {
+        if(err) {
+            alert(err);
+            window.location.href = '/';
+        }
+        else {
+            console.log('no error');
+            
+        }
+    });
 });
 
 socket.on('disconnect', function () {
     console.log('Disconnected from server');            
+});
+
+socket.on('updateUserList', function(users) {
+    let ol = $('<ol></ol>')   ;
+    users.forEach(function (user) {
+        ol.append($('<li></li>').text(user));
+    });
+    $('#users').html(ol);
 });
 
 socket.on('newMessage', function (message) {
